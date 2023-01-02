@@ -46,18 +46,13 @@ public class MapGenerator : MonoBehaviour {
 
 
     //Tree Spawn
-    public int minTreeHeight;
-    public int maxTreeHeight;
-    public float spawnRadius = 1;
-    public Vector2 regionSize = Vector2.one;
-
-    public int rejectionSamples = 30;
-    public float displayRadius = 1;
-    List<Vector2> pointSpawn;
+    [HideInInspector]
+    public MapDisplay display;
+    [HideInInspector]
+    public Vector3[] verticesList;
 
     void Awake() {
         falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
-        
         
     }
 
@@ -134,10 +129,8 @@ public class MapGenerator : MonoBehaviour {
     }
 
     void Update() {
-        if (mapDataThreadInfoQueue.Count > 0)
-        {
-            for (int i = 0; i < mapDataThreadInfoQueue.Count; i++)
-            {
+        if (mapDataThreadInfoQueue.Count > 0) {
+            for (int i = 0; i < mapDataThreadInfoQueue.Count; i++) {
                 MapThreadInfo<MapData> threadInfo = mapDataThreadInfoQueue.Dequeue();
                 threadInfo.callback(threadInfo.parameter);
             }
@@ -155,7 +148,7 @@ public class MapGenerator : MonoBehaviour {
         //Display method
         MapData mapData = GenerateMapData(Vector2.zero);
 
-        MapDisplay display = FindObjectOfType<MapDisplay>();
+        display = FindObjectOfType<MapDisplay>();
 
         if (drawMode == DrawMode.NoiseMap)
         {
@@ -171,21 +164,16 @@ public class MapGenerator : MonoBehaviour {
                 meshHeightMultiplier,
                 meshHeightCurve,
                 editPreviewLOD, useFlatShading), TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
+            verticesList = display.meshData.vertices;
         }
         else if (drawMode == DrawMode.FalloffMap) {
             display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapChunkSize)));
+            verticesList = display.meshData.vertices;
         }
 
     }
 
-    private void OnDrawGizmos(){
-        Gizmos.DrawWireCube(regionSize / 2, regionSize);
-        if (pointSpawn != null){
-            foreach (Vector2 point in pointSpawn){
-                Gizmos.DrawSphere(point, displayRadius);
-            }
-        }
-    }
+
 
     private void OnValidate() {
         if (lacunarity < 1) 
@@ -196,9 +184,6 @@ public class MapGenerator : MonoBehaviour {
 
         falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
 
-        //regionSize *= (useFallOff == true) ? 95 : 239;
-
-        pointSpawn = PoissonDiscSampling.GeneratePoints(spawnRadius, regionSize, rejectionSamples);
     }
 
     struct MapThreadInfo<T>{

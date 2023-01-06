@@ -17,7 +17,7 @@ public class TreeGeneratorEditor : Editor
 
         if (GUILayout.Button("Generate"))
         {
-            treeGen.generateTrees(treeGen.previewScaleFactor);
+            //treeGen.generateTrees(treeGen.previewScaleFactor);
         }
     }
 }

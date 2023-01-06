@@ -1,0 +1,56 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Threading;
+using System;
+
+public class ThreadedDataRequester : MonoBehaviour {
+
+    static ThreadedDataRequester instance;
+    Queue<ThreadInfo> dataQueue = new Queue<ThreadInfo>();
+
+    private void Awake() {
+        instance = FindObjectOfType<ThreadedDataRequester>();
+    }
+
+    //Threading
+    public static void RequestData(Func<object> generateData, Action<object> callback) {
+        ThreadStart threadStart = delegate {
+            instance.DataThread(generateData, callback);
+        };
+
+        new Thread(threadStart).Start();
+    }
+
+    void DataThread(Func<object> generateData, Action<object> callback) {
+        //When calling a method from inside a thread, the method will run on the thread
+        object data = generateData();
+
+        lock (dataQueue) {
+            //The lock will block the thread so that no other process can call it while it's been already called
+            dataQueue.Enqueue(new ThreadInfo (callback, data));
+        }
+    }
+
+
+
+    void Update() {
+        if (dataQueue.Count > 0) {
+            for (int i = 0; i < dataQueue.Count; i++) {
+                ThreadInfo threadInfo = dataQueue.Dequeue();
+                threadInfo.callback(threadInfo.parameter);
+            }
+        }
+
+    }
+
+    struct ThreadInfo {
+        public readonly Action<object> callback;
+        public readonly object parameter;
+
+        public ThreadInfo(Action<object> callback, object parameter) {
+            this.callback = callback;
+            this.parameter = parameter;
+        }
+    }
+}

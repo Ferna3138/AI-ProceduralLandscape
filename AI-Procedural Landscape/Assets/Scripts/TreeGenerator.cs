@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TreeGenerator : MonoBehaviour
 {
+    /*
     MapGenerator mapGenerator;
     public ObjectType[] Spawner;
     Vector3[] vertices;
@@ -82,5 +83,5 @@ public struct ObjectType
     public float minPositionHeight;
     public float maxPositionHeight;
 
-
+    */
 }

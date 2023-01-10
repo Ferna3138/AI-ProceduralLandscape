@@ -14,7 +14,8 @@ public class TerrainChunk {
     Vector2 sampleCenter;
 
     //Use Bounds to find the distance between a given point and the viewer's position
-    Bounds bounds;
+    [HideInInspector]
+    public Bounds bounds;
 
     MeshRenderer meshRenderer;
     MeshFilter meshFilter;
@@ -47,8 +48,6 @@ public class TerrainChunk {
         sampleCenter = coordinate * meshSettings.meshWorldSize / meshSettings.meshScale;
         Vector2 position = coordinate * meshSettings.meshWorldSize;
         bounds = new Bounds(position, Vector2.one * meshSettings.meshWorldSize);
-
-
 
         meshObject = new GameObject("Terrain Chunk");
         meshRenderer = meshObject.AddComponent<MeshRenderer>();

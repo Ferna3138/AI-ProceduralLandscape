@@ -17,11 +17,11 @@ MonoBehaviour:
     normalizeMode: 1
     scale: 50.1
     octaves: 7
-    persistance: 0.394
+    persistance: 0.37
     lacunarity: 2.56
     seed: 0
     offset: {x: 0, y: 0}
-  useFallOff: 0
+  useFallOff: 1
   heightMultiplier: 100
   heightCurve:
     serializedVersion: 2

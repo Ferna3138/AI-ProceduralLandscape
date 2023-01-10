@@ -26,9 +26,11 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
     float meshWorldSize;
     int chunksVisibleInViewDistance;
 
+
     Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
 
-    List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
+    [HideInInspector]
+    public List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
 
     void Start() {

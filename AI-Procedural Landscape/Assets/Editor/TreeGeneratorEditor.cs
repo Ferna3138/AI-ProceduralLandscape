@@ -2,14 +2,14 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
-[CustomEditor(typeof(TreeGenerator))]
-public class TreeGeneratorEditor : Editor
+[CustomEditor(typeof(ObjectSpawner))]
+public class ObjectSpawnerEditor : Editor
 {
 
 
     public override void OnInspectorGUI()
     {
-        TreeGenerator treeGen = (TreeGenerator)target;
+        ObjectSpawner objectSpawner = (ObjectSpawner)target;
         if (DrawDefaultInspector())
         {
 

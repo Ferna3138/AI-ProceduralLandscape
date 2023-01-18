@@ -4,9 +4,28 @@ using UnityEngine;
 
 public static class HeightMapGenerator {
     public static HeightMap GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCenter) {
-        float[,] values = Noise.GenerateNoiseMap(width, height, settings.noiseSettings, sampleCenter);
+        float[,] values = Noise.GenerateNoiseMap(width, height, settings.noiseLayers[0], sampleCenter);
 
-        AnimationCurve heightCurve_safe = new AnimationCurve (settings.heightCurve.keys);
+        for (int i = 1; i < settings.noiseLayers.Length; i++) {
+            float[,] tempValues = Noise.GenerateNoiseMap(width, height, settings.noiseLayers[i], sampleCenter);
+
+            
+            
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+
+                    //values[x, y] = Mathf.Lerp(values[x,y], tempValues[x,y], 0.5f);
+
+                    //values[x, y] = values[x, y] + tempValues[x, y];
+                    values[x, y] = Mathf.Lerp(values[x, y], tempValues[x, y], settings.noiseLayers[i].blend);
+                }
+            }
+            
+        }
+
+        
+
+        AnimationCurve heightCurve_safe = new AnimationCurve(settings.heightCurve.keys);
 
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;

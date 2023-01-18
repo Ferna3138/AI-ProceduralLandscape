@@ -14,7 +14,6 @@ public class TerrainChunk {
     Vector2 sampleCenter;
 
     //Use Bounds to find the distance between a given point and the viewer's position
-    [HideInInspector]
     public Bounds bounds;
 
     MeshRenderer meshRenderer;
@@ -71,6 +70,7 @@ public class TerrainChunk {
         }
 
         maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceThreshold;
+        
 
     }
 
@@ -158,7 +158,55 @@ public class TerrainChunk {
     public bool isVisible() {
         return meshObject.activeSelf;
     }
+
+
+
+    //WATER CHUNK SECTION
+    //Second Constructor
+    public TerrainChunk(Vector2 coordinate, float meshWorldSize, LodInfo[] detailLevels, MeshSettings meshSettings, float waterHeight, Transform parent, Transform viewer, Material material)
+    {
+        this.coordinate = coordinate;
+        this.viewer = viewer;
+
+        sampleCenter = coordinate * meshSettings.meshWorldSize / meshSettings.meshScale;
+        Vector2 position = coordinate * meshSettings.meshWorldSize;
+
+        bounds = new Bounds(position, Vector2.one * meshSettings.meshWorldSize);
+
+        meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        meshObject.name = "Water Chunk";
+        //meshRenderer = meshObject.AddComponent<MeshRenderer>();
+        meshObject.transform.localScale = new Vector3(meshSettings.meshWorldSize / 10, 1, meshSettings.meshWorldSize / 10);
+
+        meshObject.GetComponent<Renderer>().material = material;
+        meshObject.transform.position = new Vector3(position.x, waterHeight, position.y);
+        meshObject.transform.parent = parent;
+
+        //Let the Update method make it visible
+        setVisible(false);
+
+        maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceThreshold;
+    }
+    //Water Update method
+    public void UpdateWaterChunk() {
+        float viewerDistanceFromNearestEdge = Mathf.Sqrt(bounds.SqrDistance(viewerPosition));
+
+        bool wasVisible = isVisible();
+        bool visible = viewerDistanceFromNearestEdge <= maxViewDistance;
+
+        if (wasVisible != visible)
+        {
+            setVisible(visible);
+            if (onVisibilityChanged != null)
+            {
+                onVisibilityChanged(this, visible);
+            }
+        }
+    }
 }
+
+
+
 
 
 class LODMesh {

@@ -24,8 +24,20 @@ Shader "Custom/Terrain" {
         float baseColourStrength[maxLayerCount];
         float baseTextureScales[maxLayerCount];
 
+
+        float3 blendBaseColours[maxLayerCount];
+        float blendBaseStartHeights[maxLayerCount];
+        float blendBaseBlends[maxLayerCount];
+        float blendBaseColourStrength[maxLayerCount];
+        float blendBaseTextureScales[maxLayerCount];
+
+
         float minHeight;
         float maxHeight;
+
+        float north;
+        float east;
+        float blendBias;
 
         sampler2D textTexture;
         float testScale;
@@ -54,9 +66,11 @@ Shader "Custom/Terrain" {
 
         void surf (Input IN, inout SurfaceOutputStandard o) {
             float heightPercent = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
-            
+
             float3 blendAxes = abs(IN.worldNormal);
             blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
+
+            
 
             for (int i = 0; i < layerCount; i++) {
                 float drawStrength = inverseLerp(-baseBlends[i] / 2 - epsilon,
@@ -65,6 +79,7 @@ Shader "Custom/Terrain" {
 
                 float3 baseColour = baseColours[i] * baseColourStrength[i];
                 float3 textureColour = triplanar(IN.worldPos, baseTextureScales[i], blendAxes, i) * (1-baseColourStrength[i]);
+               
                 
                 o.Albedo = o.Albedo * (1 - drawStrength) + (baseColour+textureColour) * drawStrength;
             }

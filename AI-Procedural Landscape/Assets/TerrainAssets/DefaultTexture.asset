@@ -13,38 +13,189 @@ MonoBehaviour:
   m_Name: DefaultTexture
   m_EditorClassIdentifier: 
   autoUpdate: 1
+  biomes:
+  - name: Normal
+    biomeLayers:
+    - name: Grass
+      texture: {fileID: 0}
+      tint: {r: 0, g: 0.7830189, b: 0.020185824, a: 0}
+      tintStrength: 1
+      startHeight: 0
+      blendStrength: 0.112
+      textureScale: 0
+    - name: Mountain
+      texture: {fileID: 0}
+      tint: {r: 0.20754719, g: 0.15749934, b: 0.10083661, a: 0}
+      tintStrength: 1
+      startHeight: 0.245
+      blendStrength: 0.126
+      textureScale: 0
+    biomeTint: {r: 1, g: 1, b: 1, a: 0}
+    biomeGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    biomeTintStrength: 0
+    biomeStartHeight: 0
+  - name: Desert
+    biomeLayers:
+    - name: Sand 1
+      texture: {fileID: 0}
+      tint: {r: 0.5849056, g: 0.49691826, b: 0.3448736, a: 0}
+      tintStrength: 1
+      startHeight: 0
+      blendStrength: 0
+      textureScale: 0
+    - name: Sand 2
+      texture: {fileID: 0}
+      tint: {r: 0.2735849, g: 0.2385264, b: 0.16131185, a: 0}
+      tintStrength: 1
+      startHeight: 0.196
+      blendStrength: 0
+      textureScale: 0
+    biomeTint: {r: 1, g: 1, b: 1, a: 0}
+    biomeGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    biomeTintStrength: 0
+    biomeStartHeight: 0
+  - name: Jungle
+    biomeLayers:
+    - name: Grass 1
+      texture: {fileID: 0}
+      tint: {r: 0, g: 1, b: 0.9631138, a: 0}
+      tintStrength: 1
+      startHeight: 0
+      blendStrength: 0
+      textureScale: 0
+    - name: Grass 2
+      texture: {fileID: 0}
+      tint: {r: 0, g: 1, b: 0.47993517, a: 0}
+      tintStrength: 1
+      startHeight: 0.196
+      blendStrength: 0
+      textureScale: 0
+    biomeTint: {r: 1, g: 1, b: 1, a: 0}
+    biomeGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    biomeTintStrength: 0
+    biomeStartHeight: 0
   layers:
-  - texture: {fileID: 2800000, guid: db243d2611d444037835ecd4af49e9b9, type: 3}
-    tint: {r: 0.06839624, g: 0.39085537, b: 0.5, a: 0}
-    tintStrength: 0.209
+  - name: Underwater 1
+    texture: {fileID: 2800000, guid: db243d2611d444037835ecd4af49e9b9, type: 3}
+    tint: {r: 0.18867922, g: 0.15211985, b: 0.036489844, a: 0}
+    tintStrength: 0.8
     startHeight: 0
     blendStrength: 0.033
     textureScale: 6.99
-  - texture: {fileID: 2800000, guid: db243d2611d444037835ecd4af49e9b9, type: 3}
-    tint: {r: 0.16967781, g: 0.65773356, b: 0.8773585, a: 0}
-    tintStrength: 0.164
+  - name: Underwater 2
+    texture: {fileID: 2800000, guid: db243d2611d444037835ecd4af49e9b9, type: 3}
+    tint: {r: 0.31132078, g: 0.19994581, b: 0.08076719, a: 0}
+    tintStrength: 0.813
     startHeight: 0.061
     blendStrength: 0.258
     textureScale: 6.63
-  - texture: {fileID: 2800000, guid: 78c40a2f18561480eab11b27ad5713aa, type: 3}
+  - name: 
+    texture: {fileID: 2800000, guid: 78c40a2f18561480eab11b27ad5713aa, type: 3}
     tint: {r: 0.5377358, g: 0.5188237, b: 0.40330186, a: 0}
     tintStrength: 0.121
     startHeight: 0.033
     blendStrength: 0.033
     textureScale: 4.32
-  - texture: {fileID: 2800000, guid: e36d15b65ccd248c19a846616a6767f9, type: 3}
+  - name: 
+    texture: {fileID: 2800000, guid: e36d15b65ccd248c19a846616a6767f9, type: 3}
     tint: {r: 0.41008884, g: 0.764151, b: 0.19824673, a: 0}
     tintStrength: 0.154
     startHeight: 0.077
     blendStrength: 0.033
     textureScale: 10.66
-  - texture: {fileID: 2800000, guid: 37ad0d4d757814f44ba3bc82d824e4fa, type: 3}
+  - name: 
+    texture: {fileID: 2800000, guid: 37ad0d4d757814f44ba3bc82d824e4fa, type: 3}
     tint: {r: 0.1981132, g: 0.15078199, b: 0.06448024, a: 0}
     tintStrength: 0
     startHeight: 0.143
     blendStrength: 0.11
     textureScale: 60.45
-  - texture: {fileID: 2800000, guid: 22da49d227e55449d9ab0dbc09fe7f46, type: 3}
+  - name: 
+    texture: {fileID: 2800000, guid: 22da49d227e55449d9ab0dbc09fe7f46, type: 3}
     tint: {r: 1, g: 1, b: 1, a: 0}
     tintStrength: 0
     startHeight: 0.555

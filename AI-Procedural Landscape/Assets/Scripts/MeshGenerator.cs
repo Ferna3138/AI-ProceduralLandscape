@@ -65,7 +65,7 @@ public static class MeshGenerator{
 
                         int dstToMainVertexA = ((isVertical) ? y - 2 : x - 2) % skipIncrement;
                         int dstToMainVertexB = skipIncrement - dstToMainVertexA;
-                        float dstPercentFromAtoB = dstToMainVertexA / (float)skipIncrement;
+                        float dstPercentFromAtoB = dstToMainVertexA / (float) skipIncrement;
 
                         float heightMainVertexA = heightMap[(isVertical) ? x : x - dstToMainVertexA, (isVertical) ? y - dstToMainVertexA : y];
                         float heightMainVertexB = heightMap[(isVertical) ? x : x + dstToMainVertexB, (isVertical) ? y + dstToMainVertexB : y];

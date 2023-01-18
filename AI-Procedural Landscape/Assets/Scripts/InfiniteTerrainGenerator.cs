@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class InfiniteTerrainGenerator : MonoBehaviour {
     
@@ -12,6 +14,9 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
     public TextureData textureSettings;
+
+    public Material waterMaterial;
+    public float waterHeight;
 
     public int colliderLODIndex;
     public LodInfo[] detailLevels;
@@ -28,10 +33,12 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
 
 
     Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
+    List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
-    [HideInInspector]
-    public List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
+    //Water Creation
+    Dictionary<Vector2, TerrainChunk> waterChunksDictionary = new Dictionary<Vector2, TerrainChunk>();
+    List<TerrainChunk> visibleWaterChunks = new List<TerrainChunk>();
 
     void Start() {
         textureSettings.ApplyToMaterial(mapMaterial);
@@ -43,6 +50,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
         chunksVisibleInViewDistance = Mathf.RoundToInt(maxViewDistance / meshWorldSize);
 
         UpdateVisibleChunks();
+        
     }
 
     private void Update() {
@@ -58,15 +66,21 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
             prevViewerPosition = viewerPosition;
             UpdateVisibleChunks();
         }
-        
     }
+
 
     void UpdateVisibleChunks() {
         HashSet<Vector2> alreadyUpdatedChunkCoords = new HashSet<Vector2>();
+        HashSet<Vector2> alreadyUpdatedWaterChunkCoords = new HashSet<Vector2>();
 
         for (int i = visibleTerrainChunks.Count - 1; i >=  0; i--) {
             alreadyUpdatedChunkCoords.Add(visibleTerrainChunks[i].coordinate);
             visibleTerrainChunks[i].UpdateChunk();
+        }
+
+        for (int i = visibleWaterChunks.Count - 1; i >= 0; i--) {
+            alreadyUpdatedWaterChunkCoords.Add(visibleWaterChunks[i].coordinate);
+            visibleWaterChunks[i].UpdateWaterChunk();
         }
 
         int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / meshWorldSize);
@@ -84,6 +98,8 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
                         terrainChunkDictionary[viewedChunkCoord].UpdateChunk();
                     }
                     else {
+                        //textureSettings.UpdateBlendBias(mapMaterial, viewedChunkCoord);
+
                         TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, meshWorldSize, detailLevels, colliderLODIndex, transform, viewer, mapMaterial);
                         terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
 
@@ -92,10 +108,31 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
                         newChunk.Load();
                     }
                 }
+
+                if (!alreadyUpdatedWaterChunkCoords.Contains(viewedChunkCoord)) {
+                    if (waterChunksDictionary.ContainsKey(viewedChunkCoord)) {
+                        waterChunksDictionary[viewedChunkCoord].UpdateWaterChunk();
+                    }
+                    else {
+                        TerrainChunk waterChunk = new TerrainChunk(viewedChunkCoord, meshWorldSize, detailLevels, meshSettings, waterHeight, transform, viewer, waterMaterial);
+                        waterChunksDictionary.Add(viewedChunkCoord, waterChunk);
+
+                        waterChunk.onVisibilityChanged += OnWaterVisibilityChanged;
+                    }
+                }
             }
         }
     }
 
+    
+    void OnWaterVisibilityChanged(TerrainChunk chunk, bool isVisible) {
+        if (isVisible)
+            visibleWaterChunks.Add(chunk);
+        else
+            visibleWaterChunks.Remove(chunk);
+
+
+    }
 
     void OnTerrainChunkVisibilityChanged(TerrainChunk chunk, bool isVisible) {
         if (isVisible) {
@@ -105,8 +142,11 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
             visibleTerrainChunks.Remove(chunk);
         }
     }
-    
+
+
 }
+
+
 
 [System.Serializable]
 public struct LodInfo {
@@ -124,3 +164,4 @@ public struct LodInfo {
         }
     }
 }
+

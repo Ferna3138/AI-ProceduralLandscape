@@ -122,10 +122,14 @@ public class NoiseSettings {
     public int seed;
     public Vector2 offset;
 
+    [Range(0, 1)]
+    public float blend = 0.5f;
+
     public void ValidateValues() {
         scale = Mathf.Max(scale, 0.01f);
         octaves = Mathf.Max(octaves, 1);
         lacunarity = Mathf.Max(lacunarity, 1);
         persistance = Mathf.Clamp01(persistance);
+        blend = Mathf.Clamp01(blend);
     }
 }

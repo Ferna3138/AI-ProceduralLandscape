@@ -4,9 +4,11 @@ using UnityEngine;
 
 [CreateAssetMenu()]
 public class HeightMapSettings : UpdatableData {
+    public NoiseSettings[] noiseLayers;
     public NoiseSettings noiseSettings;
 
     public bool useFallOff;
+
     //Height modificator
     public float heightMultiplier;
     public AnimationCurve heightCurve;

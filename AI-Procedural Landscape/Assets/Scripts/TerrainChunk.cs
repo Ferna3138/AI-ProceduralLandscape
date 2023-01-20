@@ -21,7 +21,8 @@ public class TerrainChunk {
     MeshCollider meshCollider;
 
     LodInfo[] detailLevels;
-    LODMesh[] detailLevelsMeshes;
+    public LODMesh[] detailLevelsMeshes;
+    
     int colliderLODIndex;
 
     HeightMap heightMap;
@@ -36,13 +37,19 @@ public class TerrainChunk {
 
 
     Transform viewer;
-    public TerrainChunk(Vector2 coordinate, HeightMapSettings heightMapSettings, MeshSettings meshSettings, float meshWorldSize, LodInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material) {
+    public MeshData meshData;
+
+    bool spawnObjects = true;
+    ObjectSpawner objectSpawner;
+ 
+    public TerrainChunk(Vector2 coordinate, HeightMapSettings heightMapSettings, MeshSettings meshSettings, float meshWorldSize, LodInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, ObjectSpawner objectSpawner) {
         this.coordinate = coordinate;
         this.detailLevels = detailLevels;
         this.colliderLODIndex = colliderLODIndex;
         this.heightMapSettings = heightMapSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
+        this.objectSpawner = objectSpawner;
 
         sampleCenter = coordinate * meshSettings.meshWorldSize / meshSettings.meshScale;
         Vector2 position = coordinate * meshSettings.meshWorldSize;
@@ -66,8 +73,9 @@ public class TerrainChunk {
             detailLevelsMeshes[i].updateCallback += UpdateChunk;
             if (i == colliderLODIndex) {
                 detailLevelsMeshes[i].updateCallback += UpdateCollider;
-            }
+            } 
         }
+        
 
         maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceThreshold;
         
@@ -102,6 +110,7 @@ public class TerrainChunk {
 
             if (visible) {
                 int lodIndex = 0;
+                
 
                 for (int i = 0; i < detailLevels.Length; i++) {
                     if (viewerDistanceFromNearestEdge > detailLevels[i].visibleDistanceThreshold)
@@ -115,12 +124,13 @@ public class TerrainChunk {
                     if (lodMesh.hasMesh) {
                         prevLODIndex = lodIndex;
                         meshFilter.mesh = lodMesh.mesh;
+
+                        meshData = lodMesh.meshData;
                     }
                     else if (!lodMesh.hasRequestedMesh) {
                         lodMesh.RequestMesh(heightMap, meshSettings);
                     }
                 }
-
             }
 
             if (wasVisible != visible) {
@@ -128,8 +138,8 @@ public class TerrainChunk {
                 if (onVisibilityChanged != null) {
                     onVisibilityChanged(this, visible);
                 }
-
             }
+
         }
     }
 
@@ -139,7 +149,7 @@ public class TerrainChunk {
 
             if (sqrDistanceFromViewerToEdge < detailLevels[colliderLODIndex].sqrVisibleDistanceThreshold) {
                 if (!detailLevelsMeshes[colliderLODIndex].hasRequestedMesh) {
-                    detailLevelsMeshes[colliderLODIndex].RequestMesh(heightMap, meshSettings);
+                    detailLevelsMeshes[colliderLODIndex].RequestMesh(heightMap, meshSettings);          
                 }
             }
 
@@ -147,6 +157,7 @@ public class TerrainChunk {
                 if (detailLevelsMeshes[colliderLODIndex].hasMesh)
                     meshCollider.sharedMesh = detailLevelsMeshes[colliderLODIndex].mesh;
                 hasSetCollider = true;
+
             }
         }
     }
@@ -209,11 +220,13 @@ public class TerrainChunk {
 
 
 
-class LODMesh {
+public class LODMesh {
     public Mesh mesh;
     //Keep track of whether or not we requested the mesh yet
     public bool hasRequestedMesh;
     public bool hasMesh;
+
+    public MeshData meshData;
 
     int lod;
     public event System.Action updateCallback;
@@ -225,6 +238,8 @@ class LODMesh {
     void OnMeshDataReceived(object meshDataObject) {
         mesh = ((MeshData)meshDataObject).CreateMesh();
         hasMesh = true;
+
+        meshData = (MeshData)meshDataObject;
 
         updateCallback();
     }

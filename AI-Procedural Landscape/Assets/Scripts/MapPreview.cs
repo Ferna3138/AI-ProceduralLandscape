@@ -18,7 +18,8 @@ public class MapPreview : MonoBehaviour {
 
     public Material terrainMaterial;
 
-
+    [HideInInspector]
+    public MeshData generatedMeshData;
 
     [Range(0, MeshSettings.numSupportedLODs - 1)]
     public int editPreviewLOD;
@@ -43,6 +44,7 @@ public class MapPreview : MonoBehaviour {
         meshFilter.gameObject.SetActive(true);
     }
 
+    
 
     public void DrawMapInEditor() {
         textureData.UpdateMeshHeights(terrainMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
@@ -53,21 +55,18 @@ public class MapPreview : MonoBehaviour {
             heightMapSettings,
             Vector2.zero);
 
-
         if (drawMode == DrawMode.NoiseMap) {
             DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
         }
-
         else if (drawMode == DrawMode.Mesh) {
-            DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.values, meshSettings, editPreviewLOD));
-
+            generatedMeshData = MeshGenerator.GenerateTerrainMesh(heightMap.values, meshSettings, editPreviewLOD);
+            DrawMesh(generatedMeshData);
             //verticesList = display.meshData.vertices;
         }
         else if (drawMode == DrawMode.FalloffMap) {
             DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numberVertexPerLine),0,1)));
             //verticesList = display.meshData.vertices;
         }
-
     }
 
     void OnValuesUpdated() {

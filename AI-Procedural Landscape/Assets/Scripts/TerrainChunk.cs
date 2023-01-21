@@ -34,25 +34,30 @@ public class TerrainChunk {
 
     HeightMapSettings heightMapSettings;
     MeshSettings meshSettings;
-
+    ObjectSpawn objectSpawn;
 
     Transform viewer;
     public MeshData meshData;
 
+
     bool spawnObjects = true;
     ObjectSpawner objectSpawner;
- 
-    public TerrainChunk(Vector2 coordinate, HeightMapSettings heightMapSettings, MeshSettings meshSettings, float meshWorldSize, LodInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, ObjectSpawner objectSpawner) {
+    Vector2 position;
+    bool objectsHaveBeenSpawned = false;
+    
+    public TerrainChunk(Vector2 coordinate, HeightMapSettings heightMapSettings, MeshSettings meshSettings, float meshWorldSize, LodInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, ObjectSpawner objectSpawner, ObjectSpawn objectSpawn) {
         this.coordinate = coordinate;
         this.detailLevels = detailLevels;
         this.colliderLODIndex = colliderLODIndex;
         this.heightMapSettings = heightMapSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
+        this.objectSpawn = objectSpawn;
+
         this.objectSpawner = objectSpawner;
 
         sampleCenter = coordinate * meshSettings.meshWorldSize / meshSettings.meshScale;
-        Vector2 position = coordinate * meshSettings.meshWorldSize;
+        position = coordinate * meshSettings.meshWorldSize;
         bounds = new Bounds(position, Vector2.one * meshSettings.meshWorldSize);
 
         meshObject = new GameObject("Terrain Chunk");
@@ -75,11 +80,10 @@ public class TerrainChunk {
                 detailLevelsMeshes[i].updateCallback += UpdateCollider;
             } 
         }
-        
 
         maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceThreshold;
-        
 
+        
     }
 
     public void Load() {
@@ -110,7 +114,6 @@ public class TerrainChunk {
 
             if (visible) {
                 int lodIndex = 0;
-                
 
                 for (int i = 0; i < detailLevels.Length; i++) {
                     if (viewerDistanceFromNearestEdge > detailLevels[i].visibleDistanceThreshold)
@@ -119,28 +122,45 @@ public class TerrainChunk {
                         break;
                 }
 
+
                 if (lodIndex != prevLODIndex) {
                     LODMesh lodMesh = detailLevelsMeshes[lodIndex];
                     if (lodMesh.hasMesh) {
                         prevLODIndex = lodIndex;
-                        meshFilter.mesh = lodMesh.mesh;
-
-                        meshData = lodMesh.meshData;
+                        meshFilter.mesh = lodMesh.mesh; 
                     }
                     else if (!lodMesh.hasRequestedMesh) {
                         lodMesh.RequestMesh(heightMap, meshSettings);
                     }
                 }
+                
+                if (objectsHaveBeenSpawned) {
+
+                    if (lodIndex != 0)
+                        objectSpawner.setVisibleObjects(false, position);
+                    else
+                        objectSpawner.setVisibleObjects(true, position);
+                }
+            }
+
+            if (detailLevelsMeshes[0].hasMesh) {
+                meshData = detailLevelsMeshes[0].meshData;
+                if (!objectsHaveBeenSpawned)
+                    SpawnObjects();
             }
 
             if (wasVisible != visible) {
                 setVisible(visible);
                 if (onVisibilityChanged != null) {
                     onVisibilityChanged(this, visible);
+
                 }
             }
 
+            
+
         }
+
     }
 
     public void UpdateCollider() {
@@ -157,9 +177,15 @@ public class TerrainChunk {
                 if (detailLevelsMeshes[colliderLODIndex].hasMesh)
                     meshCollider.sharedMesh = detailLevelsMeshes[colliderLODIndex].mesh;
                 hasSetCollider = true;
-
             }
         }
+
+    }
+
+    public void SpawnObjects() {
+        objectSpawner.generateObjects(objectSpawn, meshData, position, Random.Range(0.0f,1.0f));
+        
+        objectsHaveBeenSpawned = true;
     }
 
     public void setVisible(bool visible) {
@@ -239,8 +265,7 @@ public class LODMesh {
         mesh = ((MeshData)meshDataObject).CreateMesh();
         hasMesh = true;
 
-        meshData = (MeshData)meshDataObject;
-
+        meshData = (MeshData) meshDataObject;
         updateCallback();
     }
 

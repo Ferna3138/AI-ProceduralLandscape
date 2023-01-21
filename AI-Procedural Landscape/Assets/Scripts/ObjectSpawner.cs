@@ -3,63 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour {
-    MeshData meshData;
-    MapPreview mapPreview;
+    ObjectSpawn objectSpawn;
     public ObjectType[] Spawner;
     Vector3[] vertices;
     public float previewScaleFactor;
 
 
-    const float viewerMoveThresholdChunkUpdate = 25f;
-    const float sqrViewerMoveThresholdChunkUpdate = viewerMoveThresholdChunkUpdate * viewerMoveThresholdChunkUpdate;
+    [HideInInspector]
+    public List<GameObject> visibleParentsList = new List<GameObject>();
 
-    Vector2 viewerPosition;
-    Vector2 prevViewerPosition;
+    public void generateObjects(ObjectSpawn objectSpawn , MeshData meshData, Vector2 coordinates, float densityRandomness) {
 
-    List<GameObject> visibleObjects= new List<GameObject>();
-    Dictionary<Vector2, GameObject> visibleObjectsDictionary = new Dictionary<Vector2, GameObject>();
-
-    public void generateObjects(MeshData meshData) {
-        
         vertices = meshData.vertices;
-        Debug.Log(vertices);
+        
         Texture2D noiseMapTexture = Noise.QuickNoiseMap(241, 241, 500);
 
         //Check if Spawner list is empty
-        if (Spawner.Length > 0) {
-            for (int j = 0; j < Spawner.Length; j++) {
+        if (objectSpawn.Spawner.Length > 0) {
+            for (int j = 0; j < objectSpawn.Spawner.Length; j++) {
 
                 //Check if object list is empty -> Prevent Null Reference
-                if (Spawner[j].objectList.Count > 0) {
-
-                    //Delete Objects if they exist already
-                    if (GameObject.Find(Spawner[j].name))
-                        DestroyImmediate(GameObject.Find(Spawner[j].name));
+                if (objectSpawn.Spawner[j].objectList.Count > 0) {
 
                     //Create Parent Object
-                    GameObject parent = new GameObject(Spawner[j].name);
+                    GameObject parent = new GameObject(objectSpawn.Spawner[j].name + coordinates);
+                    parent.transform.localPosition = new Vector3(coordinates.x, 0, coordinates.y);
+                    
+                    visibleParentsList.Add(parent);
 
                     for (int i = 0; i < vertices.Length - 1; i++) {
                         //In order to avoid 2 for loops, we use a random value from 1 to i index to calculate the noise
                         //and then compare it with the density value of each element
                         float noiseMapValue = noiseMapTexture.GetPixel(i, Random.Range(1, i)).g;
 
-                        if (noiseMapValue > 1 - Spawner[j].density) {
+                        if (noiseMapValue > 1 - Random.Range(0.0f, objectSpawn.Spawner[j].density)) {
+                            //(objectSpawn.Spawner[j].density + Random.Range(0, densityRandomness))/2
+                            if (vertices[i].y >= (objectSpawn.Spawner[j].minPositionHeight + Random.Range(0,10)) &&
+                                vertices[i].y <= (objectSpawn.Spawner[j].maxPositionHeight) + Random.Range(0,10)) {
 
-                            if (vertices[i].y >= Spawner[j].minPositionHeight &&
-                                vertices[i].y <= Spawner[j].maxPositionHeight) {
-
-                                int randomPrefab = Random.Range(0, Spawner[j].objectList.Count - 1);
+                                int randomPrefab = Random.Range(0, objectSpawn.Spawner[j].objectList.Count - 1);
 
                                 //Add a random number from a certain range to make the  spawning more natural
-                                Vector3 pos = new Vector3(vertices[i].x + Random.Range(-2f, 2f), vertices[i].y, vertices[i].z + Random.Range(-2f, 2f));
+                                Vector3 pos = new Vector3(vertices[i].x + Random.Range(-1f, 1f) + coordinates.x, vertices[i].y, vertices[i].z + Random.Range(-1f, 1f) + coordinates.y);
 
-                                GameObject go = Instantiate(Spawner[j].objectList[randomPrefab],
+                                GameObject go = Instantiate(objectSpawn.Spawner[j].objectList[randomPrefab],
                                                 pos,
                                                 Quaternion.Euler(new Vector3(Random.Range(-10, 10), Random.Range(0, 360), Random.Range(-10, 10))),
                                                 parent.transform);
 
-                                go.transform.localScale = Vector3.one * Random.Range(Spawner[j].objectMinSize, Spawner[j].objectMaxSize);
+                                go.transform.localScale = Vector3.one * Random.Range(objectSpawn.Spawner[j].objectMinSize, objectSpawn.Spawner[j].objectMaxSize);
+
                             }
                         }
                     }
@@ -68,19 +61,12 @@ public class ObjectSpawner : MonoBehaviour {
         }
     }
 
+    public void setVisibleObjects(bool visible, Vector2 coordinates) {
+        foreach (GameObject var in visibleParentsList) {
+            if (var.transform.position == new Vector3(coordinates.x, 0, coordinates.y)) {
+                var.SetActive(visible);
+            }
+        }
+    }
 
 }
-    [System.Serializable]
-    public struct ObjectType {
-        public string name;
-
-        public List<GameObject> objectList;
-
-        public float density;
-
-        public float objectMinSize;
-        public float objectMaxSize;
-
-        public float minPositionHeight;
-        public float maxPositionHeight;
-    }

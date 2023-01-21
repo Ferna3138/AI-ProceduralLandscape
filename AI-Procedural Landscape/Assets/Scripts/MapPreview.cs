@@ -7,7 +7,7 @@ public class MapPreview : MonoBehaviour {
     public MeshFilter meshFilter;
     public MeshRenderer meshRenderer;
     public MeshData meshData;
-
+    public ObjectSpawn objectSpawn;
     public enum DrawMode { NoiseMap, Mesh, FalloffMap };
 
     public DrawMode drawMode;

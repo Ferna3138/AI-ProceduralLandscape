@@ -14,6 +14,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
     public TextureData textureSettings;
+    public ObjectSpawn objectSpawn;
 
     public Material waterMaterial;
     public float waterHeight;
@@ -109,13 +110,14 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
                     else {
                         //textureSettings.UpdateBlendBias(mapMaterial, viewedChunkCoord);
 
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, meshWorldSize, detailLevels, colliderLODIndex, transform, viewer, mapMaterial,objectSpawner);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, meshWorldSize, detailLevels, colliderLODIndex, transform, viewer, mapMaterial,objectSpawner, objectSpawn);
                         terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
 
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
 
                         newChunk.Load();
 
+                        
                         //Debug.Log(newChunk.meshData);
 
                         /*
@@ -143,7 +145,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
     }
 
     void UpdateObjects(MeshData meshData) {
-        objectSpawner.generateObjects(meshData);
+        //objectSpawner.generateObjects(meshData);
     }
 
     void OnWaterVisibilityChanged(TerrainChunk chunk, bool isVisible) {

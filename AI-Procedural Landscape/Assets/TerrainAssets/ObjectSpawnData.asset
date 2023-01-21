@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e1f390dade391498aa7d79d5a5a670, type: 3}
+  m_Name: ObjectSpawnData
+  m_EditorClassIdentifier: 
+  autoUpdate: 0
+  Spawner:
+  - name: Palms
+    objectList:
+    - {fileID: 118422, guid: 107cc8771223daf48be99527559937ff, type: 3}
+    - {fileID: 136866, guid: 2327ed4809c34cf4c97a5316db3d4796, type: 3}
+    - {fileID: 176278, guid: 3c74caa0496b18d4ba0a1009ebb4c992, type: 3}
+    density: 0.94
+    objectMinSize: 0.8
+    objectMaxSize: 1.35
+    minPositionHeight: 10
+    maxPositionHeight: 15
+  - name: Trees
+    objectList:
+    - {fileID: 159322, guid: b1b1573cfe717c04caad3e631288f7e9, type: 3}
+    - {fileID: 136328, guid: 613b4cc8c589ad8458e792ae21891bef, type: 3}
+    - {fileID: 180214, guid: aec50823ac9be1b45b5778c3b6c0f51a, type: 3}
+    density: 0.52
+    objectMinSize: 0.8
+    objectMaxSize: 1.35
+    minPositionHeight: 15
+    maxPositionHeight: 25
+  - name: Rocks
+    objectList:
+    - {fileID: 114526028, guid: f0b038078591d7441bbc6586bbc421d2, type: 3}
+    - {fileID: 1605025214, guid: 345663e86a7f60545b8ec4a8ef734d07, type: 3}
+    density: 0.4
+    objectMinSize: 0.3
+    objectMaxSize: 1.35
+    minPositionHeight: 10
+    maxPositionHeight: 40
+  - name: Higher Trees
+    objectList:
+    - {fileID: 142018, guid: d537224908c5f444f86c9e57e0c7234c, type: 3}
+    - {fileID: 185286, guid: 8ed1fa325ca228645ad26dd6eff14768, type: 3}
+    - {fileID: 104588, guid: 702740a5e4ac1ee40a1888d3b62faa91, type: 3}
+    density: 0.48
+    objectMinSize: 0.8
+    objectMaxSize: 1.35
+    minPositionHeight: 35
+    maxPositionHeight: 50

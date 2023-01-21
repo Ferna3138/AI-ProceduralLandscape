@@ -5,8 +5,7 @@ using UnityEditor;
 [CustomEditor(typeof(ObjectSpawner))]
 public class ObjectSpawnerEditor : Editor {
     
-    public override void OnInspectorGUI()
-    {
+    public override void OnInspectorGUI() {
 
         MeshData meshData = FindObjectOfType<MapPreview>().generatedMeshData;
         ObjectSpawner objectSpawner = (ObjectSpawner)target;
@@ -17,7 +16,7 @@ public class ObjectSpawnerEditor : Editor {
 
         if (GUILayout.Button("Generate"))
         {
-            objectSpawner.generateObjects(meshData);
+           //objectSpawner.generateObjects(meshData, new Vector2(0,0));
         }
     }
 }

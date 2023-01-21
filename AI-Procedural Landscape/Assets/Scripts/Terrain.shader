@@ -25,12 +25,6 @@ Shader "Custom/Terrain" {
         float baseTextureScales[maxLayerCount];
 
 
-        float3 blendBaseColours[maxLayerCount];
-        float blendBaseStartHeights[maxLayerCount];
-        float blendBaseBlends[maxLayerCount];
-        float blendBaseColourStrength[maxLayerCount];
-        float blendBaseTextureScales[maxLayerCount];
-
 
         float minHeight;
         float maxHeight;

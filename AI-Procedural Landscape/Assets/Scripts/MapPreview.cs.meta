@@ -3,7 +3,15 @@ guid: 5f6816499bd20448593c23b80bf01ade
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - textureRender: {instanceID: 0}
+  - meshFilter: {instanceID: 0}
+  - meshRenderer: {instanceID: 0}
+  - objectSpawn: {fileID: 11400000, guid: 1d28aba2302e1804d92bf283f33148cd, type: 2}
+  - meshSettings: {instanceID: 0}
+  - heightMapSettings: {instanceID: 0}
+  - textureData: {instanceID: 0}
+  - terrainMaterial: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -34,7 +34,7 @@ public class TerrainChunk {
 
     HeightMapSettings heightMapSettings;
     MeshSettings meshSettings;
-    ObjectSpawn objectSpawn;
+    SpawnSettings spawnSettings;
 
     Transform viewer;
     public MeshData meshData;
@@ -45,14 +45,15 @@ public class TerrainChunk {
     Vector2 position;
     bool objectsHaveBeenSpawned = false;
     
-    public TerrainChunk(Vector2 coordinate, HeightMapSettings heightMapSettings, MeshSettings meshSettings, float meshWorldSize, LodInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, ObjectSpawner objectSpawner, ObjectSpawn objectSpawn) {
+    public TerrainChunk(Vector2 coordinate, HeightMapSettings heightMapSettings, MeshSettings meshSettings, float meshWorldSize, LodInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, ObjectSpawner objectSpawner, SpawnSettings objectSpawn, bool spawnObjects) {
         this.coordinate = coordinate;
         this.detailLevels = detailLevels;
         this.colliderLODIndex = colliderLODIndex;
         this.heightMapSettings = heightMapSettings;
         this.meshSettings = meshSettings;
         this.viewer = viewer;
-        this.objectSpawn = objectSpawn;
+        this.spawnSettings = objectSpawn;
+        this.spawnObjects = spawnObjects;
 
         this.objectSpawner = objectSpawner;
 
@@ -133,20 +134,23 @@ public class TerrainChunk {
                         lodMesh.RequestMesh(heightMap, meshSettings);
                     }
                 }
-                
-                if (objectsHaveBeenSpawned) {
 
-                    if (lodIndex != 0)
-                        objectSpawner.setVisibleObjects(false, position);
-                    else
-                        objectSpawner.setVisibleObjects(true, position);
+                if (spawnObjects) {
+                    if (objectsHaveBeenSpawned) {
+                        if (lodIndex != 0)
+                            objectSpawner.setVisibleObjects(false, position);
+                        else
+                            objectSpawner.setVisibleObjects(true, position);
+                    }
                 }
             }
 
-            if (detailLevelsMeshes[0].hasMesh) {
-                meshData = detailLevelsMeshes[0].meshData;
-                if (!objectsHaveBeenSpawned)
-                    SpawnObjects();
+            if (spawnObjects) {
+                if (detailLevelsMeshes[0].hasMesh) {
+                    meshData = detailLevelsMeshes[0].meshData;
+                    if (!objectsHaveBeenSpawned)
+                        SpawnObjects();
+                }
             }
 
             if (wasVisible != visible) {
@@ -156,13 +160,9 @@ public class TerrainChunk {
 
                 }
             }
-
-            
-
         }
 
     }
-
     public void UpdateCollider() {
         if (!hasSetCollider) {
             float sqrDistanceFromViewerToEdge = bounds.SqrDistance(viewerPosition);
@@ -183,8 +183,7 @@ public class TerrainChunk {
     }
 
     public void SpawnObjects() {
-        objectSpawner.generateObjects(objectSpawn, meshData, position, Random.Range(0.0f,1.0f));
-        
+        objectSpawner.generateObjects(spawnSettings, meshData, position, Random.Range(0.0f,1.0f));
         objectsHaveBeenSpawned = true;
     }
 

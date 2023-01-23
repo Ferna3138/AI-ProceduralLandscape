@@ -14,13 +14,7 @@ public class TextureData : UpdatableData {
     float savedMinHeight;
     float savedMaxHeight;
 
-    float savedNorth;
-    float savedEast;
-
     public void ApplyToMaterial(Material material) {
-
-        
-
         material.SetInt("layerCount", layers.Length);
         material.SetColorArray("baseColours", layers.Select(x => x.tint).ToArray());
         material.SetFloatArray("baseStartHeights", layers.Select(x => x.startHeight).ToArray());
@@ -52,9 +46,7 @@ public class TextureData : UpdatableData {
         return textureArray;
     }
 
-    float CalculateBias(Vector2 position) {
-        return (Mathf.Sin(0.5f * position.y) + 1) / 2;
-    }
+ 
 
     [System.Serializable]
     public class Layer {

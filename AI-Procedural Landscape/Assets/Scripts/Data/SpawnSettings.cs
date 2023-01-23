@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ObjectSpawn : UpdatableData {
+public class SpawnSettings : UpdatableData {
     public ObjectType[] Spawner;
 
 }

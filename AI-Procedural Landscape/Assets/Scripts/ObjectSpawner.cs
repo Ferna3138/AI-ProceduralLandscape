@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour {
-    ObjectSpawn objectSpawn;
     public ObjectType[] Spawner;
     Vector3[] vertices;
     public float previewScaleFactor;
@@ -12,7 +11,7 @@ public class ObjectSpawner : MonoBehaviour {
     [HideInInspector]
     public List<GameObject> visibleParentsList = new List<GameObject>();
 
-    public void generateObjects(ObjectSpawn objectSpawn , MeshData meshData, Vector2 coordinates, float densityRandomness) {
+    public void generateObjects(SpawnSettings objectSpawn , MeshData meshData, Vector2 coordinates, float densityRandomness) {
 
         vertices = meshData.vertices;
         

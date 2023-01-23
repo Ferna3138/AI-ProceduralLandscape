@@ -14,7 +14,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
     public TextureData textureSettings;
-    public ObjectSpawn objectSpawn;
+    public SpawnSettings objectSpawn;
 
     public Material waterMaterial;
     public float waterHeight;
@@ -39,10 +39,6 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
     //Water Chunks
     Dictionary<Vector2, TerrainChunk> waterChunksDictionary = new Dictionary<Vector2, TerrainChunk>();
     List<TerrainChunk> visibleWaterChunks = new List<TerrainChunk>();
-
-    //Objects
-    Dictionary<Vector2, GameObject> objectsDictionary = new Dictionary<Vector2, GameObject>();
-    List<GameObject> visibleObjects = new List<GameObject>();
 
     public bool spawnObjects;
     ObjectSpawner objectSpawner;
@@ -108,24 +104,11 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
                         terrainChunkDictionary[viewedChunkCoord].UpdateChunk();
                     }
                     else {
-                        //textureSettings.UpdateBlendBias(mapMaterial, viewedChunkCoord);
-
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, meshWorldSize, detailLevels, colliderLODIndex, transform, viewer, mapMaterial,objectSpawner, objectSpawn);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, meshWorldSize, detailLevels, colliderLODIndex, transform, viewer, mapMaterial,objectSpawner, objectSpawn, spawnObjects);
                         terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
-
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
 
                         newChunk.Load();
-
-                        
-                        //Debug.Log(newChunk.meshData);
-
-                        /*
-                        if (spawnObjects) {
-                            
-                            UpdateObjects(newChunk.meshData);
-                        }*/
-
                     }
                 }
 
@@ -144,17 +127,12 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
         }
     }
 
-    void UpdateObjects(MeshData meshData) {
-        //objectSpawner.generateObjects(meshData);
-    }
 
     void OnWaterVisibilityChanged(TerrainChunk chunk, bool isVisible) {
         if (isVisible)
             visibleWaterChunks.Add(chunk);
         else
             visibleWaterChunks.Remove(chunk);
-
-
     }
 
     void OnTerrainChunkVisibilityChanged(TerrainChunk chunk, bool isVisible) {

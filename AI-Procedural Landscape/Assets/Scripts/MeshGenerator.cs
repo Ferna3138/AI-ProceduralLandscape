@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class MeshGenerator{
-    public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings,int levelOfDetail) {
+    public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings, int levelOfDetail) {
 
         int skipIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2;
         int numberVertexPerLine = meshSettings.numberVertexPerLine;

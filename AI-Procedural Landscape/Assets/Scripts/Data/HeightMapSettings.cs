@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BlendType { polynomial, average };
 [CreateAssetMenu()]
 public class HeightMapSettings : UpdatableData {
     public NoiseSettings[] noiseLayers;
-    public NoiseSettings noiseSettings;
+    public BlendType blendType;
 
-    public bool useFallOff;
-
-    //Height modificator
     public float heightMultiplier;
     public AnimationCurve heightCurve;
 
     public float minHeight {
         get {
-            return  heightMultiplier * heightCurve.Evaluate(0);
+            return heightMultiplier * heightCurve.Evaluate(0);
         }
     }
 
@@ -29,8 +27,10 @@ public class HeightMapSettings : UpdatableData {
     //If we're outside the Unity Editor there'll be no method to override
 #if UNITY_EDITOR
     protected override void OnValidate() {
-        noiseSettings.ValidateValues();
-        base.OnValidate();
+        foreach (NoiseSettings settings in noiseLayers) {
+            settings.ValidateValues();
+            base.OnValidate();
+        } 
     }
 #endif
 }

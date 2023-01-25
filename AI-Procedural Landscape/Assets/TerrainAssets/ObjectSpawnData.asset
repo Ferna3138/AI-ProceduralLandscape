@@ -19,47 +19,28 @@ MonoBehaviour:
     - {fileID: 118422, guid: 107cc8771223daf48be99527559937ff, type: 3}
     - {fileID: 136866, guid: 2327ed4809c34cf4c97a5316db3d4796, type: 3}
     - {fileID: 176278, guid: 3c74caa0496b18d4ba0a1009ebb4c992, type: 3}
-    density: 0.94
+    density: 0.28
     objectMinSize: 0.8
     objectMaxSize: 1.35
     minPositionHeight: 15
     maxPositionHeight: 20
   - name: Trees
     objectList:
-    - {fileID: 159322, guid: b1b1573cfe717c04caad3e631288f7e9, type: 3}
-    - {fileID: 136328, guid: 613b4cc8c589ad8458e792ae21891bef, type: 3}
-    - {fileID: 180214, guid: aec50823ac9be1b45b5778c3b6c0f51a, type: 3}
-    density: 0.52
+    - {fileID: 112728, guid: 069e1e44b643edc4fb4a9d4311a78fb7, type: 3}
+    - {fileID: 151792, guid: 1e4e7284c1efd5f4eb702c799353072c, type: 3}
+    - {fileID: 188992, guid: 11d469914a0208343b39f04223416f9c, type: 3}
+    density: 0.47
     objectMinSize: 0.8
     objectMaxSize: 1.35
     minPositionHeight: 20
     maxPositionHeight: 30
   - name: Rocks
     objectList:
+    - {fileID: 1288633026, guid: d052e3fbbc0929a408e720b491187572, type: 3}
     - {fileID: 114526028, guid: f0b038078591d7441bbc6586bbc421d2, type: 3}
-    - {fileID: 1605025214, guid: 345663e86a7f60545b8ec4a8ef734d07, type: 3}
-    density: 0.4
-    objectMinSize: 0.3
+    - {fileID: 785666640, guid: 40cdb1261502c5147946ac48cebac02b, type: 3}
+    density: 0.25
+    objectMinSize: 0.8
     objectMaxSize: 1.35
     minPositionHeight: 10
-    maxPositionHeight: 40
-  - name: Higher Trees
-    objectList:
-    - {fileID: 142018, guid: d537224908c5f444f86c9e57e0c7234c, type: 3}
-    - {fileID: 185286, guid: 8ed1fa325ca228645ad26dd6eff14768, type: 3}
-    - {fileID: 104588, guid: 702740a5e4ac1ee40a1888d3b62faa91, type: 3}
-    density: 0.48
-    objectMinSize: 0.8
-    objectMaxSize: 1.35
-    minPositionHeight: 30
-    maxPositionHeight: 35
-  - name: Dry Plants
-    objectList:
-    - {fileID: 160606, guid: 5c3cbac9d5eae3844a928d36e6dbd1a6, type: 3}
-    - {fileID: 114526028, guid: f0b038078591d7441bbc6586bbc421d2, type: 3}
-    - {fileID: 410661016, guid: 5f392814e5dcb6a45b0380e07be63338, type: 3}
-    density: 0.57
-    objectMinSize: 0.8
-    objectMaxSize: 1.35
-    minPositionHeight: 50
-    maxPositionHeight: 130
+    maxPositionHeight: 120

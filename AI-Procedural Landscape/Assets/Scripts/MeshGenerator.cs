@@ -92,7 +92,7 @@ public static class MeshGenerator{
             }
         }
 
-        meshData.Finalize();
+        meshData.BakeNormals();
 
         return meshData;
     }
@@ -213,11 +213,8 @@ public class MeshData {
         return Vector3.Cross(sideAB, sideAC).normalized;
     }
 
-    public void Finalize() {
-            BakeNormals();
-    }
 
-    private void BakeNormals() {
+    public void BakeNormals() {
         bakedNormals = CalculateNormal();
     }
 

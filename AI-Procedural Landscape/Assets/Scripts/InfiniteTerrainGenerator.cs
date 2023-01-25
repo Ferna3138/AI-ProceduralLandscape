@@ -121,7 +121,7 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
                         waterChunksDictionary.Add(viewedChunkCoord, waterChunk);
                         waterChunk.onVisibilityChanged += OnWaterVisibilityChanged;
 
-                        waterChunk.UpdateChunk();
+                        
                     }
                 }
             }

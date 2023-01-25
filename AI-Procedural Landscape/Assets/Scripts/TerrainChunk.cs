@@ -213,8 +213,9 @@ public class TerrainChunk {
         meshObject.transform.position = new Vector3(position.x, waterHeight, position.y);
         meshObject.transform.parent = parent;
 
-        //Let the Update method make it visible
-        setVisible(false);
+        //Let the water chunk be visible by default
+        //Updating it like the terrain Chunk makes water invisible at start
+        setVisible(true);
 
         maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceThreshold;
     }

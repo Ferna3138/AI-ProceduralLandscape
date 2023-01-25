@@ -81,10 +81,7 @@ public class TerrainChunk {
                 detailLevelsMeshes[i].updateCallback += UpdateCollider;
             } 
         }
-
         maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceThreshold;
-
-        
     }
 
     public void Load() {
@@ -115,14 +112,12 @@ public class TerrainChunk {
 
             if (visible) {
                 int lodIndex = 0;
-
                 for (int i = 0; i < detailLevels.Length; i++) {
                     if (viewerDistanceFromNearestEdge > detailLevels[i].visibleDistanceThreshold)
                         lodIndex = i + 1;
                     else
                         break;
                 }
-
 
                 if (lodIndex != prevLODIndex) {
                     LODMesh lodMesh = detailLevelsMeshes[lodIndex];
@@ -161,8 +156,8 @@ public class TerrainChunk {
                 }
             }
         }
-
     }
+
     public void UpdateCollider() {
         if (!hasSetCollider) {
             float sqrDistanceFromViewerToEdge = bounds.SqrDistance(viewerPosition);
@@ -183,7 +178,7 @@ public class TerrainChunk {
     }
 
     public void SpawnObjects() {
-        objectSpawner.generateObjects(spawnSettings, meshData, position, Random.Range(0.0f,1.0f));
+        objectSpawner.generateObjects(spawnSettings, meshData, position, 1);
         objectsHaveBeenSpawned = true;
     }
 

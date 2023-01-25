@@ -10,8 +10,7 @@ public static class MeshGenerator{
 
         Vector2 topLeft = new Vector2(-1, 1) * meshSettings.meshWorldSize / 2f;
 
-
-        MeshData meshData = new MeshData(numberVertexPerLine, skipIncrement, meshSettings.useFlatShading);
+        MeshData meshData = new MeshData(numberVertexPerLine, skipIncrement);
 
         int[,] vertexIndecesMap = new int[numberVertexPerLine, numberVertexPerLine];
         int meshVertexIndex = 0;
@@ -56,7 +55,9 @@ public static class MeshGenerator{
                     int vertexIndex = vertexIndecesMap[x, y];
 
                     //Vertexes Creation
+                        //We want the percent = 0 when x = 1 which is where the mesh actually starts, and percent = 1 when x = numVericesPerLine - 2 which is where the mesh ends
                     Vector2 percent = new Vector2(x - 1, y - 1) / (numberVertexPerLine - 3);
+                    
                     Vector2 vertexPosition2D = topLeft + new Vector2(percent.x, -percent.y) * meshSettings.meshWorldSize;
                     float height = heightMap[x, y];
 
@@ -109,11 +110,7 @@ public class MeshData {
     int triangleIndex;
     int outOfMeshTriangleIndex;
 
-    bool useFlatShading;
-
-    public MeshData(int numVertsPerLine, int skipIncrement, bool useFlatShading) {
-        this.useFlatShading = useFlatShading;
-
+    public MeshData(int numVertsPerLine, int skipIncrement) {
         int numMeshEdgeVertices = (numVertsPerLine - 2) * 4 - 4;
         int numEdgeConnectionVertices = (skipIncrement - 1) * (numVertsPerLine - 5) / skipIncrement * 4;
         int numMainVertiesPerLine = (numVertsPerLine - 5) / skipIncrement * 4 + 1;
@@ -217,32 +214,14 @@ public class MeshData {
     }
 
     public void Finalize() {
-        if (useFlatShading){
-            FlatShading();
-        }
-        else {
             BakeNormals();
-        }
     }
 
     private void BakeNormals() {
         bakedNormals = CalculateNormal();
     }
 
-    void FlatShading() {
-        Vector3[] flatShadedVertices = new Vector3[triangles.Length];
-        Vector2[] flatShadedUvs = new Vector2[triangles.Length];
 
-        for (int i = 0; i < triangles.Length; i++) {
-            flatShadedVertices[i] = vertices[triangles[i]];
-            flatShadedUvs[i] = uvs[triangles[i]];
-            triangles[i] = i;
-        }
-
-        vertices = flatShadedVertices;
-        uvs = flatShadedUvs;
-
-    }
 
     public Mesh CreateMesh() {
         Mesh mesh = new Mesh();
@@ -250,10 +229,7 @@ public class MeshData {
         mesh.triangles = triangles;
         mesh.uv = uvs;
 
-        if (useFlatShading)
-            mesh.RecalculateNormals();
-        else 
-            mesh.normals = bakedNormals;
+        mesh.normals = bakedNormals;
         
         return mesh;
     }

@@ -119,8 +119,9 @@ public class InfiniteTerrainGenerator : MonoBehaviour {
                     else {
                         TerrainChunk waterChunk = new TerrainChunk(viewedChunkCoord, meshWorldSize, detailLevels, meshSettings, waterHeight, transform, viewer, waterMaterial);
                         waterChunksDictionary.Add(viewedChunkCoord, waterChunk);
-
                         waterChunk.onVisibilityChanged += OnWaterVisibilityChanged;
+
+                        waterChunk.UpdateChunk();
                     }
                 }
             }

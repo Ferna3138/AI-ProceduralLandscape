@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-
 public static class Noise {
 
     public enum NormalizeMode {Local, Global};
@@ -27,7 +26,7 @@ public static class Noise {
             maxPossibleHeight += amplitude;
             amplitude *= settings.persistance;
         }
-
+        
 
         float maxLocalNoiseHeight = float.MinValue;
         float minLocalNoiseHeight = float.MaxValue;
@@ -37,7 +36,6 @@ public static class Noise {
 
         for (int y = 0; y < mapHeight; y++) {
             for (int x = 0; x < mapWidth; x++) {
-
                 amplitude = 1;
                 frequency = 1;
                 float noiseHeight = 0;
@@ -47,24 +45,17 @@ public static class Noise {
                     float sampleY = (y - halfHeight + octaveOffsets[i].y) / settings.scale * frequency;
 
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
-
-
                     noiseHeight += perlinValue * amplitude;
-
                     amplitude *= settings.persistance;
                     frequency *= settings.lacunarity;
                 }
-
                 if (noiseHeight > maxLocalNoiseHeight) {
                     maxLocalNoiseHeight = noiseHeight;
                 }
-
                 if (noiseHeight < minLocalNoiseHeight) {
                     minLocalNoiseHeight = noiseHeight;
                 }
-
-                noiseMap[x, y] = noiseHeight;
-
+                    noiseMap[x, y] = noiseHeight;
                 if (settings.normalizeMode == NormalizeMode.Global) {
                     float normalizedHeight = (noiseMap[x, y] + 1) / (2 * maxPossibleHeight / 1.5f);
                     noiseMap[x, y] = Math.Clamp(normalizedHeight, 0, int.MaxValue);
@@ -88,24 +79,16 @@ public static class Noise {
         return noiseMap;
     }
 
-
-
-    public static Texture2D QuickNoiseMap(int width, int height, float scale)
-    {
+    public static Texture2D QuickNoiseMap(int width, int height, float scale) {
         Texture2D noiseMapTexture = new Texture2D(width, height);
-
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < width; y++)
-            {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < width; y++) {
                 float noiseValue = Mathf.PerlinNoise((float)x / width * scale, (float)y / height * scale);
-
                 noiseMapTexture.SetPixel(x, y, new Color(0, noiseValue, 0));
             }
         }
 
         noiseMapTexture.Apply();
-
         return noiseMapTexture;
     }
 }
@@ -128,14 +111,11 @@ public class NoiseSettings {
     public int seed;
     public Vector2 offset;
 
-    [Range(0, 1)]
-    public float blend = 0.5f;
 
     public void ValidateValues() {
         scale = Mathf.Max(scale, 0.01f);
         octaves = Mathf.Max(octaves, 1);
         lacunarity = Mathf.Max(lacunarity, 1);
         persistance = Mathf.Clamp01(persistance);
-        blend = Mathf.Clamp01(blend);
     }
 }

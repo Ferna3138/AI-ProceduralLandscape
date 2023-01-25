@@ -8,7 +8,7 @@ public class MapPreview : MonoBehaviour {
     public MeshRenderer meshRenderer;
     public MeshData meshData;
     public SpawnSettings objectSpawn;
-    public enum DrawMode { NoiseMap, Mesh, FalloffMap };
+    public enum DrawMode { NoiseMap, Mesh};
 
     public DrawMode drawMode;
 
@@ -61,11 +61,6 @@ public class MapPreview : MonoBehaviour {
         else if (drawMode == DrawMode.Mesh) {
             generatedMeshData = MeshGenerator.GenerateTerrainMesh(heightMap.values, meshSettings, editPreviewLOD);
             DrawMesh(generatedMeshData);
-            //verticesList = display.meshData.vertices;
-        }
-        else if (drawMode == DrawMode.FalloffMap) {
-            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numberVertexPerLine),0,1)));
-            //verticesList = display.meshData.vertices;
         }
     }
 

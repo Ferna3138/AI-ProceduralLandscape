@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e1f390dade391498aa7d79d5a5a670, type: 3}
   m_Name: ObjectSpawnData
   m_EditorClassIdentifier: 
-  autoUpdate: 0
+  autoUpdate: 1
   Spawner:
   - name: Palms
     objectList:
@@ -22,8 +22,8 @@ MonoBehaviour:
     density: 0.94
     objectMinSize: 0.8
     objectMaxSize: 1.35
-    minPositionHeight: 10
-    maxPositionHeight: 15
+    minPositionHeight: 15
+    maxPositionHeight: 20
   - name: Trees
     objectList:
     - {fileID: 159322, guid: b1b1573cfe717c04caad3e631288f7e9, type: 3}
@@ -32,8 +32,8 @@ MonoBehaviour:
     density: 0.52
     objectMinSize: 0.8
     objectMaxSize: 1.35
-    minPositionHeight: 15
-    maxPositionHeight: 25
+    minPositionHeight: 20
+    maxPositionHeight: 30
   - name: Rocks
     objectList:
     - {fileID: 114526028, guid: f0b038078591d7441bbc6586bbc421d2, type: 3}
@@ -51,5 +51,15 @@ MonoBehaviour:
     density: 0.48
     objectMinSize: 0.8
     objectMaxSize: 1.35
-    minPositionHeight: 35
-    maxPositionHeight: 50
+    minPositionHeight: 30
+    maxPositionHeight: 35
+  - name: Dry Plants
+    objectList:
+    - {fileID: 160606, guid: 5c3cbac9d5eae3844a928d36e6dbd1a6, type: 3}
+    - {fileID: 114526028, guid: f0b038078591d7441bbc6586bbc421d2, type: 3}
+    - {fileID: 410661016, guid: 5f392814e5dcb6a45b0380e07be63338, type: 3}
+    density: 0.57
+    objectMinSize: 0.8
+    objectMaxSize: 1.35
+    minPositionHeight: 50
+    maxPositionHeight: 130

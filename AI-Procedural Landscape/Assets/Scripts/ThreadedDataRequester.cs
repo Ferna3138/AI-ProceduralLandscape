@@ -17,7 +17,6 @@ public class ThreadedDataRequester : MonoBehaviour {
         ThreadStart threadStart = delegate {
             instance.DataThread(generateData, callback);
         };
-
         new Thread(threadStart).Start();
     }
 
@@ -31,8 +30,6 @@ public class ThreadedDataRequester : MonoBehaviour {
         }
     }
 
-
-
     void Update() {
         if (dataQueue.Count > 0) {
             for (int i = 0; i < dataQueue.Count; i++) {
@@ -40,7 +37,6 @@ public class ThreadedDataRequester : MonoBehaviour {
                 threadInfo.callback(threadInfo.parameter);
             }
         }
-
     }
 
     struct ThreadInfo {

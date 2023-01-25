@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BlendType { polynomial, average };
+public enum BlendType { polynomial, sMinCubic, SquaredMin};
 [CreateAssetMenu()]
 public class HeightMapSettings : UpdatableData {
     public NoiseSettings[] noiseLayers;
@@ -24,13 +24,12 @@ public class HeightMapSettings : UpdatableData {
         }
     }
 
-    //If we're outside the Unity Editor there'll be no method to override
-#if UNITY_EDITOR
+
     protected override void OnValidate() {
         foreach (NoiseSettings settings in noiseLayers) {
             settings.ValidateValues();
             base.OnValidate();
         } 
     }
-#endif
+
 }
